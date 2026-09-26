@@ -68,10 +68,20 @@
 /* ---------- плитки: два подписанных ряда, названия участков над столбцами ---------- */
 /* плитка не растёт выше 220 px: на большом экране крупная пила кривой кричит громче тревоги */
 .lv-grid { flex: 0 1 auto; min-height: 0; display: grid; grid-template-columns: 72px repeat(var(--n, 6), minmax(0, 1fr));
-  grid-template-rows: auto repeat(2, minmax(0, 220px)); align-content: start; gap: var(--sp-2); }
+  grid-template-rows: auto repeat(2, minmax(0, 220px)); align-content: start; gap: var(--sp-2) 18px; }
 .lv-corner, .lv-gap { display: block; }
-.lv-col { font-size: var(--fs-cap); line-height: var(--lh-cap); font-weight: var(--fw-strong); color: var(--text-2); align-self: end;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 2px; }
+.lv-corner { align-self: end; font-size: var(--fs-cap); line-height: var(--lh-cap); color: var(--muted); white-space: nowrap; }
+/* заголовок столбца — шаг маршрута: номер, участок, стрелка к следующему (К46: линия читается как поток) */
+.lv-col { display: flex; align-items: center; gap: 4px; min-width: 0; font-size: var(--fs-cap); line-height: var(--lh-cap);
+  font-weight: var(--fw-strong); color: var(--text-2); align-self: end; padding: 0 2px; }
+.lv-step { flex: none; display: inline-grid; place-items: center; min-width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid var(--line-2); color: var(--muted); font-size: var(--fs-cap); font-weight: var(--fw-strong); }
+.lv-col-t { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lv-arrow { flex: none; margin-left: auto; margin-right: -16px; color: var(--muted); font-weight: 400; }
+/* между плитками ряда — тонкий соединитель «→» в промежутке столбцов: деталь идёт слева направо */
+.tile[data-flow] { position: relative; }
+.tile[data-flow]::after { content: "→"; position: absolute; right: -16px; top: 50%; width: 14px; transform: translateY(-50%);
+  text-align: center; color: var(--muted); font-size: var(--fs-cap); line-height: 1; pointer-events: none; }
 .lv-label { align-self: center; font-size: var(--fs-cap); font-weight: 700; color: var(--text-2); white-space: nowrap; }
 
 .tile { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-2) var(--sp-2) 6px;
@@ -84,6 +94,7 @@
 .t-status .zic { width: 20px; height: 20px; font-size: var(--fs-cap); }
 .t-margin { font-size: var(--fs-num); line-height: var(--lh-num); font-weight: var(--fw-strong); color: var(--text); white-space: nowrap; }
 .t-margin-odd { color: var(--z-ink); }
+.t-margin-ok { color: var(--st-ok-ink); } /* светофор: норма — зелёное число, без заливки */
 .t-spark { flex: 1 1 30px; min-height: 22px; max-height: 130px; overflow: hidden; position: relative; }
 /* кривая не распирает плитку: её высота — от плитки, а не наоборот */
 .t-spark > .spark { position: absolute; left: 0; top: 0; }

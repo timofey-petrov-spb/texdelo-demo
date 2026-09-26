@@ -174,18 +174,23 @@ export function mountLine(root, app, { openJournal } = {}) {
     const routes = lines.map((l) => (l.route.length ? l.route : [...l.stations.keys()]));
     const n = Math.max(...routes.map((r) => r.length));
     grid.style.setProperty('--n', String(n));
-    // названия участков — один раз над столбцами (по первой линии: у обеих линий тот же маршрут)
+    // названия участков — один раз над столбцами (по первой линии: у обеих линий тот же маршрут), по порядку хода
+    // детали: номер шага и стрелка к следующему участку (К46: «вся линия целиком» читается как поток)
     const first = lines[0];
-    grid.append(h('span', { class: 'lv-corner' }), ...routes[0].map((sid) => h('span', { class: 'lv-col', title: first.stations.get(sid)?.title || sid,
-      text: shortStation(first.stations.get(sid)?.title || sid) })));
+    const last = routes[0].length - 1;
+    grid.append(h('span', { class: 'lv-corner', text: 'ход детали' }), ...routes[0].map((sid, k) => h('span', { class: 'lv-col',
+      title: `Шаг ${k + 1} из ${last + 1}: ${first.stations.get(sid)?.title || sid}` }, [
+      h('b', { class: 'lv-step', text: String(k + 1) }), h('span', { class: 'lv-col-t', text: shortStation(first.stations.get(sid)?.title || sid) }),
+      k < last ? h('span', { class: 'lv-arrow', 'aria-hidden': 'true', text: '→' }) : null])));
     lines.forEach((line, i) => {
       grid.append(h('span', { class: 'lv-label', text: lineWord(line.line_id) }));
-      for (const st of routes[i]) {
+      routes[i].forEach((st, k) => {
         const t = stationTile(app, line.line_id, st, refreshTiles);
         tiles.set(stationKey(line.line_id, st), t);
+        if (k < routes[i].length - 1) t.el.dataset.flow = 'next'; // className плитки задаёт tile.js
         grid.append(t.el);
         t.update();
-      }
+      });
       for (let k = routes[i].length; k < n; k += 1) grid.append(h('span', { class: 'lv-gap' }));
     });
     placeItems();

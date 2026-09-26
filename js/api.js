@@ -146,6 +146,8 @@ export function createLiveApi(base, getToken, fetchImpl) {
     // оповещения с адресатами и сроками эскалации (API v1.4); allowed_actions — для роли токена. Без active=true:
     // у ядра «активно» — ещё не подтверждено, а строке полосы после «Принял» нужно показать, кто и когда принял
     notifications: () => getJSON(base, '/v1/notifications', opt()),
+    // сводка монитора приёма ядра (карантин и отказы по источнику) — экран «Входные данные»
+    ingestStats: () => getJSON(base, '/v1/ingest/stats', opt()),
     // изображение-доказательство (API v1.4): <img> не умеет заголовок Authorization — файл берётся с токеном
     // роли и показывается из памяти браузера. 409 — файл не совпал с отпечатком в событии
     async evidence(ref) {

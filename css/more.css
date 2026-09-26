@@ -217,3 +217,45 @@
 .mt-note { font-size: 13px; }
 .mt-cal { margin: 0 0 8px; padding: 6px 10px; border-radius: 4px; box-shadow: inset 3px 0 0 var(--z); background: var(--surface-2); }
 .mt-cal .zic { background: transparent; color: var(--z-ink); box-shadow: inset 0 0 0 1.5px var(--z); }
+
+/* ---------- «Входные данные» (К46): светофор по источнику, тревога — только настоящая ---------- */
+.src-page { max-width: 1560px; }
+.src-top { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--gap); align-items: stretch; }
+.src-sum { display: flex; flex-direction: column; gap: 8px; }
+.src-sum-t { margin: 0; font-size: var(--fs-body); line-height: var(--lh-body); font-weight: var(--fw-strong); }
+.src-facts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: var(--fs-cap); color: var(--text-2); }
+.src-f b { font-size: var(--fs-body); color: var(--text); }
+.src-f-info b { color: var(--st-caution-ink); }
+.src-f-bad b { color: var(--st-serious-ink); }
+.src-f-na b { color: var(--muted); font-weight: 500; }
+.src-alarm, .src-ok { margin: 0; display: flex; gap: 6px; align-items: baseline; font-size: var(--fs-cap); }
+.src-alarm { color: var(--st-serious-ink); font-weight: var(--fw-strong); }
+.src-alarm .zic { background: var(--st-serious); color: var(--on-st); }
+.src-ok { color: var(--text-2); }
+.src-ok .zic { background: transparent; color: var(--st-ok-ink); }
+.src-quiet { margin: 0; font-size: var(--fs-minor); }
+.src-cases { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 10px; font-size: var(--fs-minor); }
+.src-cases dt { font-weight: var(--fw-strong); color: var(--text); }
+.src-cases dd { margin: 0; color: var(--text-2); }
+.src-t td { vertical-align: middle; }
+.src-t .src-name { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.src-t .src-where, .src-t .src-link { white-space: nowrap; }
+.src-t .num { text-align: right; }
+.src-t thead th { white-space: normal; line-height: 1.2; vertical-align: bottom; }
+.src-r.tone-ok { --z: var(--st-ok); --z-ink: var(--st-ok-ink); }
+.src-ic.tone-ok { background: transparent; color: var(--st-ok-ink); }
+.src-ic.tone-none { background: transparent; color: var(--faint); box-shadow: inset 0 0 0 1.5px var(--line-2); border-radius: 50%; }
+.src-ic.tone-caution { background: transparent; color: var(--z-ink); box-shadow: inset 0 0 0 1.5px var(--z); border-radius: 50%; }
+.src-ic.tone-serious { background: var(--z); color: var(--on-st); }
+.src-link.link-ok { color: var(--st-ok-ink); }
+.src-link.link-serious { color: var(--st-serious-ink); font-weight: var(--fw-strong); }
+.src-link.link-none, .src-never td { color: var(--muted); }
+.src-info { color: var(--st-caution-ink); font-weight: var(--fw-strong); }
+.src-bad { color: var(--st-serious-ink); font-weight: var(--fw-strong); }
+.src-said { color: var(--text-2); font-size: var(--fs-minor); }
+.src-never .src-name b { font-weight: 500; }
+.src-nev { margin-top: 8px; font-size: var(--fs-minor); color: var(--muted); }
+.src-nev > summary { cursor: pointer; color: var(--text-2); }
+.src-nev-l { margin: 6px 0 0; padding: 0; list-style: none; columns: 3 260px; column-gap: 24px; }
+.src-nev-l b { font-weight: 500; color: var(--text-2); }
+@media (max-width: 1100px) { .src-top { grid-template-columns: 1fr; } }

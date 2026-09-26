@@ -1,5 +1,5 @@
-// Плитка участка и метки деталей на табло линии. Норма — серым; цвет — только у отклонения: зона участка
-// хуже нормы, точка кривой вне нормы, удержанная или отклонившаяся деталь.
+// Плитка участка и метки деталей на табло линии. Площади — серым; светофор (К46): норма — зелёные знак и число
+// запаса, цвет рамки — только у отклонения: зона участка хуже нормы, точка кривой вне нормы, удержанная деталь.
 
 import { clear, h, zoneBadge } from './dom.js';
 import {
@@ -191,7 +191,7 @@ export function stationTile(app, lineId, stationId, onLearned) {
       if (lastPt) {
         const m = pointMargin(lastPt, app.limits);
         const pz = zoneKey(lastPt.zone);
-        setAttr(margin, 'className', `t-margin${isAbnormal(pz) ? ` z-${pz} t-margin-odd` : ''}`);
+        setAttr(margin, 'className', `t-margin${isAbnormal(pz) ? ` z-${pz} t-margin-odd` : pz === 'with_margin' && Number.isFinite(lastPt.margin_pct) ? ' t-margin-ok' : ''}`);
         setAttr(margin, 'textContent', Number.isFinite(lastPt.margin_pct) ? fmtPct(lastPt.margin_pct) : '—');
         tip = [`Последняя деталь ${itemTitle(lastPt.item_id)}: ${marginLine(m)}`, distanceText(m), ZONES[pz].label,
           app.limits?.get(lastPt.characteristic_id)?.title].filter(Boolean).join(', ');

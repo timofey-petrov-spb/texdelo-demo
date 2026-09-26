@@ -1,6 +1,7 @@
 /* ТехДело — табло линии и пост ОТК. Основа по принципам высокоэффективного HMI (ANSI/ISA-101.01):
-   фон и норма — оттенки серого; цвет — только у отклонения, и чем опаснее, тем заметнее; каждый статус —
-   цвет + форма знака + подпись. Палитра статусов — открытая система статусов; текст, включая приглушённый
+   фон и площади — оттенки серого; статус — светофором (К46, сессия с экспертами 26.09): зелёный — с запасом (только
+   знак и число, без заливки площадей), жёлтый — внимание (запас снижен, уход режима), оранжевый — нужно решение,
+   красный — стоп и вне допуска; каждый статус — цвет + форма знака + подпись. Палитра статусов — открытая система статусов; текст, включая приглушённый
    (--muted, --faint), — с контрастом не ниже 4,5:1 (WCAG AA) на фонах панелей обеих тем.
    Светлая тема по умолчанию (защита, проектор); тёмная — [data-theme="dark"], меню роли или ?theme=dark. */
 
@@ -40,8 +41,9 @@
   --bg: #0f1216; --surface: #161a20; --surface-2: #1b2027; --surface-3: #232932; --line: #2a3039; --line-2: #3a414c;
   --text: #e6e9ed; --text-2: #b9c0ca; --muted: #8b94a1; --faint: #808894; --link: #9dbfdf; --focus: #9dbfdf;
   /* статусы: заливка и текст на нейтральном фоне */
+  --st-ok: #3fb45f; --st-ok-ink: #5cc878; /* светофор: норма — спокойный зелёный знак и число */
   --st-critical: #ff3838; --st-critical-ink: #ff5a5a;
-  --st-serious: #ffb302; --st-serious-ink: #ffb302;
+  --st-serious: #ff9a1a; --st-serious-ink: #ffa742; /* оранжевый — посередине между жёлтым и красным (ΔE ≈ 45 и 52) */
   --st-caution: #fce83a; --st-caution-ink: #efdc4a;
   --st-standby: #2dccff; --st-standby-ink: #45d0ff;
   --on-st: #0f1216;
@@ -53,8 +55,9 @@
   --bg: #eceff2; --surface: #ffffff; --surface-2: #f5f6f8; --surface-3: #e8ebef; --line: #d6dae0; --line-2: #c1c7cf;
   --text: #15191e; --text-2: #3b434d; --muted: #5a6370; --faint: #646b75; --link: #235e91; --focus: #235e91;
   /* на белом фоне статусные линии и рамки темнее: контраст не ниже 3:1 для графики и 4,5:1 для текста */
+  --st-ok: #2e8540; --st-ok-ink: #1d6b2f;
   --st-critical: #ff2a04; --st-critical-ink: #b41b02;
-  --st-serious: #d27f00; --st-serious-ink: #8a5200;
+  --st-serious: #dc7400; --st-serious-ink: #955000; /* ΔE до жёлтого и красного ≈ 39 и 40 */
   --st-caution: #9c8700; --st-caution-ink: #6b5d00;
   --st-standby: #1a9fcc; --st-standby-ink: #0a6a8a;
   --on-st: #15191e;
@@ -62,8 +65,8 @@
   color-scheme: light;
 }
 
-/* зона → статус: норма нейтральна, цвет — только отклонению */
-.z-with_margin { --z: var(--line-2); --z-ink: var(--muted); }
+/* зона → статус светофором: рамки и площади нормы нейтральны, зелёный — только у знака и числа */
+.z-with_margin { --z: var(--line-2); --z-ink: var(--st-ok-ink); }
 .z-not_checked { --z: var(--faint); --z-ink: var(--faint); }
 .z-margin_reduced { --z: var(--st-caution); --z-ink: var(--st-caution-ink); }
 .z-near_limit { --z: var(--st-serious); --z-ink: var(--st-serious-ink); }
@@ -72,7 +75,8 @@
 .sev-critical, .tone-critical { --z: var(--st-critical); --z-ink: var(--st-critical-ink); }
 .sev-serious, .tone-serious { --z: var(--st-serious); --z-ink: var(--st-serious-ink); }
 .sev-caution, .tone-caution { --z: var(--st-caution); --z-ink: var(--st-caution-ink); }
-.sev-advisory, .tone-none, .tone-ok { --z: var(--line-2); --z-ink: var(--muted); }
+.sev-advisory, .tone-none { --z: var(--line-2); --z-ink: var(--muted); }
+.tone-ok { --z: var(--line-2); --z-ink: var(--st-ok-ink); }
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
@@ -129,6 +133,10 @@ h1, h2, h3 { font-weight: 650; }
 .w-on { color: var(--z-ink); border-color: var(--z); }
 .w-on .zic { background: var(--z); color: var(--on-st); box-shadow: none; }
 .w-on .w-n, .w-on .w-l { color: var(--z-ink); font-weight: var(--fw-strong); }
+/* «! Данные: N» — только при настоящей тревоге по входным данным (К46): карантин, без подписи, замолчало оборудование */
+.src-sign { flex: none; display: inline-flex; align-items: center; height: var(--h-btn); padding: 0 var(--sp-2); border-radius: 4px;
+  border: 1px solid var(--st-serious); color: var(--st-serious-ink); font-size: var(--fs-cap); font-weight: var(--fw-strong); white-space: nowrap; }
+.src-sign:hover { background: var(--surface-2); text-decoration: none; }
 .w-on.sev-caution .zic { background: transparent; color: var(--z-ink); box-shadow: inset 0 0 0 1.5px var(--z); border-radius: 50%; }
 .w-on.sev-critical .zic { border-radius: 2px; }
 .spacer { flex: 1; min-width: 0; }
@@ -188,7 +196,7 @@ h1, h2, h3 { font-weight: 650; }
 /* ---------- статус: знак + подпись ---------- */
 .zic { display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 3px; font-size: var(--fs-cap); font-weight: 800; line-height: 1;
   background: var(--z); color: var(--on-st); flex: none; }
-.z-with_margin > .zic, .zic.z-with_margin { background: transparent; color: var(--muted); font-weight: 600; }
+.z-with_margin > .zic, .zic.z-with_margin { background: transparent; color: var(--st-ok-ink); font-weight: 800; }
 .z-margin_reduced > .zic, .zic.z-margin_reduced { background: transparent; color: var(--z-ink); box-shadow: inset 0 0 0 1.5px var(--z); border-radius: 50%; }
 .z-not_checked > .zic, .zic.z-not_checked { background: transparent; color: var(--faint); box-shadow: none; border: 1.5px dashed var(--faint); border-radius: 50%; }
 .z-beyond_limit > .zic, .zic.z-beyond_limit { border-radius: 2px; }

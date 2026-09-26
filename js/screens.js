@@ -6,6 +6,7 @@ import { clear, h } from './dom.js';
 import { mountEscape } from './escape_screen.js';
 import { mountMetrology } from './metrology_screen.js';
 import { mountSandbox } from './sandbox_screen.js';
+import { mountSources, watchSources } from './sources_screen.js';
 import { mountSuppliers } from './suppliers_screen.js';
 import { CABINET_URL, SCREEN_TITLES, tabsFor, workplace } from './words.js';
 
@@ -28,6 +29,7 @@ export const EXTRA_ROUTES = {
   sandbox: onlyForTab('sandbox', mountSandbox),
   metrology: mountMetrology,
   suppliers: mountSuppliers,
+  sources: mountSources,
 };
 
 export function screenTitle(kind) {
@@ -56,6 +58,7 @@ function bindMore() {
 export function renderNav(app) {
   const nav = document.getElementById('tabs');
   if (!nav) return;
+  watchSources(app); // знак «! Данные» в строке статуса — только при настоящей тревоге
   const w = workplace(app.role?.id);
   const { tabs, more } = w.cabinet ? { tabs: [], more: [] } : tabsFor(app.role?.id);
   const sig = [...tabs, ...more].map((t) => t.kind).join(',') + (more.length ? '|m' : '');

@@ -49,6 +49,12 @@ export function createCoreRecord({ base = 'demo/', fetchImpl = globalThis.fetch?
   }
   return {
     coreRecord: async () => clone((await load()).meta),
+    // «Входные данные»: ответ ядра живого стенда (LineState.sources и сводка приёма), записанный build.py
+    async sourcesRecord() {
+      const r = await fetchImpl(`${base}core/sources.json`).catch(() => null);
+      if (!r || !r.ok) throw missing('запись источников живого стенда не загрузилась');
+      return r.json();
+    },
     escapeCards: () => answer('GET /v1/cards'),
     coreCard: (nc) => answer(`GET /v1/cards/${nc}`),
     escapeLadder: (nc) => answer(`GET /v1/cards/${nc}/escape`, STORY_ONLY),

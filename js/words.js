@@ -47,6 +47,7 @@ export const SCREEN_TITLES = {
   metrology: 'Средства измерений',
   suppliers: 'Входной контроль',
   sandbox: 'Прогон по истории',
+  sources: 'Входные данные',
 };
 
 // Экраны разбора (уровень 4) в роутере табло. Вкладка — подсказка, а не право: право проверяет ядро, и экран
@@ -60,6 +61,8 @@ export const EXTRA_SCREENS = [
     roles: ['metrologist', 'controller', 'qc_head', 'technologist', 'manager'] },
   { kind: 'suppliers', label: SCREEN_TITLES.suppliers, title: 'Какую ступень контроля ждёт следующая партия и почему',
     roles: ['controller', 'qc_head', 'technologist', 'manager'] },
+  { kind: 'sources', label: SCREEN_TITLES.sources, title: 'Что присылает каждый источник: связь, повторы, опоздания, подпись, карантин',
+    roles: ['controller', 'qc_head', 'foreman', 'technologist', 'shift_supervisor', 'metrologist', 'manager'] },
 ];
 
 export function navFor(roleId) {
@@ -72,25 +75,25 @@ export function navFor(roleId) {
 // читать линию, её место — кабинет ролей (экран вместо ошибки 403)
 export const WORKPLACES = {
   controller: { doing: 'Приёмка и клеймо, карточки несоответствий, удержание', start: 'otk',
-    tabs: ['line', 'otk', 'escape'], more: ['metrology', 'suppliers'], attn: 'mine' },
+    tabs: ['line', 'otk', 'escape'], more: ['metrology', 'suppliers', 'sources'], attn: 'mine' },
   qc_head: { doing: 'Решения по значительным и критическим несоответствиям', start: 'line',
-    tabs: ['line', 'otk', 'escape'], more: ['metrology', 'suppliers', 'sandbox'], attn: 'mine' },
+    tabs: ['line', 'otk', 'escape'], more: ['metrology', 'suppliers', 'sandbox', 'sources'], attn: 'mine' },
   foreman: { doing: 'Где «стоп», что удержано, что исправить к сроку', start: 'line',
-    tabs: ['line', 'escape'], more: [], attn: 'mine' },
+    tabs: ['line', 'escape'], more: ['sources'], attn: 'mine' },
   technologist: { doing: 'Уход режима, причины, повторяющиеся обстоятельства', start: 'line',
-    tabs: ['line', 'escape', 'sandbox'], more: ['metrology', 'suppliers'], attn: 'mine' },
+    tabs: ['line', 'escape', 'sandbox'], more: ['metrology', 'suppliers', 'sources'], attn: 'mine' },
   // начальнику смены — «стоп», который вовремя не приняли: внутри уровня сначала самое давнее (ближе к эскалации)
   shift_supervisor: { doing: '«Стоп», который вовремя не приняли', start: 'line',
-    tabs: ['line', 'escape'], more: [], attn: 'all', order: 'oldest' },
+    tabs: ['line', 'escape'], more: ['sources'], attn: 'all', order: 'oldest' },
   metrologist: { doing: 'Поверка средств измерений, прибор под сомнением', start: 'metrology',
-    tabs: ['metrology', 'line', 'escape'], more: [], attn: 'all' },
+    tabs: ['metrology', 'line', 'escape'], more: ['sources'], attn: 'all' },
   manager: { doing: 'Сколько остановили и где; показатели', start: 'escape',
-    tabs: ['escape', 'line'], more: ['metrology', 'suppliers'], attn: 'all' },
+    tabs: ['escape', 'line'], more: ['metrology', 'suppliers', 'sources'], attn: 'all' },
   design_authority: { doing: 'Согласование ремонта и разрешения на отклонение', cabinet: true },
   customer_rep: { doing: 'Дело изделия, согласование, проверка пакета доказательств', cabinet: true },
   admin: { doing: 'Целостность журнала, приём данных', cabinet: true },
 };
-const ANY_ROLE = { doing: '', start: 'line', tabs: ['line', 'otk', 'escape'], more: ['metrology', 'suppliers', 'sandbox'],
+const ANY_ROLE = { doing: '', start: 'line', tabs: ['line', 'otk', 'escape'], more: ['metrology', 'suppliers', 'sandbox', 'sources'],
   attn: 'all' };
 
 export function workplace(roleId) {
