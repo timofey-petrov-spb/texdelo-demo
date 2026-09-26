@@ -289,3 +289,15 @@ h1, h2, h3 { font-weight: 650; }
 .q-show button { white-space: nowrap; }
 .q-show .lp-n, .q-show b { font-weight: 700; }
 .q-nav { display: flex; gap: var(--sp-2); align-items: center; justify-content: flex-end; margin-bottom: var(--sp-2); }
+
+/* Публичное демо на телефоне: вкладки прокручиваются в своей полосе и не налезают на значки строки статуса */
+@media (max-width: 1200px) {
+  .tabs { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; flex: 1 1 auto; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .watch, .conn, .clock, .role, .icon-btn { flex: none; }
+}
+@media (max-width: 700px) {
+  .topbar { flex-wrap: wrap; height: auto; row-gap: 4px; padding-top: 4px; padding-bottom: 4px; }
+  .tabs { order: 10; flex-basis: 100%; height: 40px; }
+  .clock, .conn-t { display: none; }
+}
