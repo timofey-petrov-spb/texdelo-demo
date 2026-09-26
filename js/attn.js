@@ -19,6 +19,11 @@ import { humanizeCodes, placeTitle } from './names.js';
 import { dueText, noteFeed, noteRowSig, notificationsFor, summarize, takeRequest, takeReview } from './notify.js';
 import { inView, runVisible, setStripContext } from './state.js';
 
+// Секунды тикают раз в секунду: текст меняем, только если он другой (без лишней перерисовки)
+function setText(el, text) {
+  if (el.textContent !== text) el.textContent = text;
+}
+
 // Поверка и прибор под сомнением — это про средство измерений, не про участок (QA В-12)
 const INSTRUMENT_CODES = new Set(['W_INSTRUMENT_CALIBRATION_DUE', 'W_INSTRUMENT_CALIBRATION_EXPIRED', 'W_INSTRUMENT_SUSPECT']);
 
