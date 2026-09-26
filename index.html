@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>ТехДело — демо табло</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="board.css">
+  <link rel="stylesheet" href="css/line.css">
+  <link rel="stylesheet" href="css/item.css">
+  <link rel="stylesheet" href="css/more.css">
+  <script>
+    // Публичная демонстрация: ядра рядом нет — табло сразу открывает запись настоящего ядра (демо-режим)
+    try { if (!/[?&]demo=/.test(location.search)) history.replaceState(null, '', location.pathname + '?demo=1' + location.hash); } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#view">К содержимому</a>
+  <!-- Строка статуса (SPEC.md 2.3): одна строка 48 px — имя, вкладки роли, три значка наблюдения, связь и часы,
+       рабочее место «роль · линия ▾», журнал, справка -->
+  <header class="topbar">
+    <a class="brand" href="#/line" aria-label="ТехДело — линия">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="4" y="4" width="24" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M10 17l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-t">ТехДело</span>
+    </a>
+    <nav class="tabs" id="tabs" aria-label="экраны">
+      <a href="#/line" data-kind="line">Линия</a>
+      <a href="#/otk" data-kind="otk">Приёмка ОТК</a>
+    </nav>
+    <div class="watch" id="watch" role="group" aria-label="что ждёт человека"></div>
+    <div class="spacer"></div>
+    <div class="conn conn-wait" id="conn" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span class="conn-t">подключаюсь…</span></div>
+    <time class="clock" id="clock" aria-label="время"></time>
+    <div class="role" id="role-box">
+      <button class="role-btn" id="role" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="role-menu"></button>
+      <div class="role-menu" id="role-menu" role="menu" hidden>
+        <ul class="role-list" id="role-list" aria-label="рабочее место"></ul>
+        <input id="token" type="password" autocomplete="off" placeholder="токен роли" aria-label="токен роли" hidden>
+        <div class="menu-sep" role="separator"></div>
+        <button class="menu-i" id="theme" type="button" role="menuitem">Тема: светлая</button>
+        <button class="menu-i" id="fullscreen" type="button" role="menuitem">На весь экран</button>
+        <button class="menu-i" id="about" type="button" role="menuitem">О стенде</button>
+        <div class="democtl" id="democtl" hidden></div>
+      </div>
+    </div>
+    <button class="icon-btn" id="journal" type="button" title="Журнал: что происходило, по порядку" aria-label="Журнал">≡</button>
+    <button class="icon-btn" id="help" type="button" title="Справка: знаки, запас, кто что делает, клавиши" aria-label="Справка">?</button>
+  </header>
+  <main id="view" class="view" tabindex="-1"></main>
+  <aside class="drawer" id="drawer" aria-label="Журнал" hidden></aside>
+  <dialog class="help" id="help-dlg" aria-label="Справка"></dialog>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>
