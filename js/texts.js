@@ -228,7 +228,7 @@ const BY_CATEGORY = 'по категории: малозначительный �
 const D = (label, what, next, reason, extra = {}) => ({ label, what, next, reason, ...extra });
 const DECISIONS = {
   // по детали (4.2)
-  'item|acceptance:accept': D('Принять ОТК', 'Клеймо с вашей подписью; квитанции в MES и 1С; деталь уходит на склад.',
+  'item|acceptance:accept': D('Принять ОТК', 'Клеймо с вашей подписью; квитанция в 1С; деталь уходит на склад.',
     '', 'none', { place: 'нижняя панель детали', main: true, when: 'все условия выполнены' }),
   'item|acceptance:accept_after_rework': D('Принять ОТК после доработки', 'Клеймо «принято после доработки».', '',
     'none', { place: 'нижняя панель детали', main: true, when: 'карточки закрыты доработкой, новое наблюдение чистое' }),

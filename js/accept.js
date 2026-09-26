@@ -313,7 +313,7 @@ export function confirmStamp(app, { itemId, label = 'Поставить клей
   const no = h('button', { type: 'button', class: 'btn', text: 'Отмена' });
   const dlg = h('dialog', { class: 'dlg dec-dlg dec-stamp', 'aria-label': 'Клеймо ОТК' }, [
     h('header', { class: 'dlg-h' }, [h('h2', { text: `Поставить клеймо ОТК на ${base}${who ? ` от имени ${who}` : ''}?` })]),
-    h('p', { class: 'muted', text: 'Клеймо подписывается вашим ключом и входит в цепочку детали; квитанции уйдут в MES и 1С.' }),
+    h('p', { class: 'muted', text: 'Клеймо подписывается вашим ключом и входит в цепочку детали; квитанция уйдёт в 1С.' }),
     h('footer', { class: 'dlg-f' }, [status, h('div', { class: 'dlg-btns' }, [no, yes])]),
   ]);
   const close = () => {
